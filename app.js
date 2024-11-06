@@ -7,10 +7,10 @@ function dmsToDecimal(degrees, minutes, seconds, direction) {
     return decimal;
 }
 
-// Convert library coordinates in DMS format to decimal (no need for conversion here, directly use the DMS)
-const libraryCoords = [
-    12 + (51 / 60) + (41 / 3600),  // Latitude: 12°51'41" N
-    77 + (39 / 60) + (52 / 3600)   // Longitude: 77°39'52" E
+// Convert the destination coordinates to decimal directly
+const destinationCoords = [
+    12 + (52 / 60) + (13 / 3600),  // Latitude: 12°52'13" N
+    77 + (40 / 60) + (11 / 3600)   // Longitude: 77°40'11" E
 ];
 
 // Initialize the Leaflet Map
@@ -48,15 +48,15 @@ fetch('geojson/floor2.geojson')
 
 // Create custom yellow and blue icons for user and destination
 const userIcon = L.icon({
-    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Font_Awesome_5_solid_map-marker-alt.svg/512px-Font_Awesome_5_solid_map-marker-alt.svg.png',
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Font_Awesome_5_solid_map-marker-alt.svg/512px-Font_Awesome_5_solid_map-marker-alt.svg.png', // Yellow icon URL
     iconSize: [25, 25],
     iconAnchor: [12, 25],
     popupAnchor: [0, -25],
-    className: 'leaflet-div-icon' 
+    className: 'leaflet-div-icon'
 });
 
 const destinationIcon = L.icon({
-    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Font_Awesome_5_solid-map-marker.svg/1024px-Font_Awesome_5_solid-map-marker.svg.png',
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Font_Awesome_5_solid-map-marker.svg/1024px-Font_Awesome_5_solid-map-marker.svg.png', // Blue icon URL
     iconSize: [25, 25],
     iconAnchor: [12, 25],
     popupAnchor: [0, -25],
@@ -65,9 +65,9 @@ const destinationIcon = L.icon({
 
 // Initialize Routing Machine (no initial waypoints as user's location will be set dynamically)
 let userMarker;
-let destinationMarker = L.marker(libraryCoords, { icon: destinationIcon }).addTo(map);
+let destinationMarker = L.marker(destinationCoords, { icon: destinationIcon }).addTo(map);
 let routeControl = L.Routing.control({
-    waypoints: [null, L.latLng(libraryCoords)],
+    waypoints: [null, L.latLng(destinationCoords)],
     routeWhileDragging: true
 }).addTo(map);
 
@@ -88,10 +88,10 @@ function startRealTimeTracking() {
             }
 
             map.setView(userLocation, 19);
-            routeControl.setWaypoints([L.latLng(userLocation), L.latLng(libraryCoords)]);
+            routeControl.setWaypoints([L.latLng(userLocation), L.latLng(destinationCoords)]);
 
             // Calculate the distance from the destination
-            const distance = calculateDistance(userLocation, libraryCoords);
+            const distance = calculateDistance(userLocation, destinationCoords);
 
             // If within 5 meters, alert the user
             if (distance < 5) {
