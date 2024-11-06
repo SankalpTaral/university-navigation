@@ -32,7 +32,7 @@ fetch('geojson/floor2.geojson')
   });
 
 // Define the destination coordinates (library)
-const libraryCoords = [2.861667, 77.664444]; // Updated library coordinates
+const libraryCoords = [12.861389, 77.664444]; // Updated library coordinates
 
 // Initialize Routing Machine (no initial waypoints as user's location will be set dynamically)
 let userMarker;
