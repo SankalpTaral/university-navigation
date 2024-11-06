@@ -1,0 +1,14 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": { "name": "Room 101" },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[[77.665, 12.861], [77.665, 12.862], [77.666, 12.862], [77.666, 12.861]]]
+        }
+      }
+    ]
+  }
+  

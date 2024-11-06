@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indoor Navigation - Campus</title>
+  
+  <!-- Include Leaflet CSS and JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  
+  <!-- Link to custom CSS file -->
+  <link rel="stylesheet" href="style.css" />
+
+
+
+  <!-- Leaflet Routing Machine -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+</head>
+<body>
+  <h1>Indoor Navigation - Campus</h1>
+  
+  <!-- Map container -->
+  <div id="map"></div>
+  
+  <!-- Buttons to switch between floors -->
+  <div class="floor-buttons">
+    <button onclick="toggleFloor(1)">Floor 1</button>
+    <button onclick="toggleFloor(2)">Floor 2</button>
+  </div>
+
+  <!-- Link to custom JavaScript file -->
+  <script src="app.js"></script>
+</body>
+</html>
