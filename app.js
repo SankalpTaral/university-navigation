@@ -24,14 +24,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Custom icon for the user's current location (yellow)
 const userIcon = L.icon({
-    iconUrl: '/Users/sankalptaral/Desktop/Sankalpdev/human.png', // Path to custom yellow marker icon
+    iconUrl: 'img/human.png', // Path to custom yellow marker icon
     iconSize: [25, 41], // Icon size
     iconAnchor: [12, 41] // Position where the icon is anchored to the map
 });
 
 // Custom icon for the destination location (blue)
 const destinationIcon = L.icon({
-    iconUrl: 'path/to/blue-marker-icon.png', // Path to custom blue marker icon
+    iconUrl: 'img/blueicon.png', // Path to custom blue marker icon
     iconSize: [25, 41],
     iconAnchor: [12, 41]
 });
