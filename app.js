@@ -2,7 +2,7 @@
 function dmsToDecimal(degrees, minutes, seconds, direction) {
     let decimal = degrees + minutes / 60 + seconds / 3600;
     if (direction === "S" || direction === "W") {
-      decimal = decimal * -1;
+        decimal = decimal * -1;
     }
     return decimal;
 }
@@ -24,14 +24,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Custom icon for the user's current location (yellow)
 const userIcon = L.icon({
-    iconUrl: 'img/human.png', // Path to custom yellow marker icon
-    iconSize: [25, 41], // Icon size
-    iconAnchor: [12, 41] // Position where the icon is anchored to the map
+    iconUrl: 'img/human.png', // Relative path to 'img' folder
+    iconSize: [25, 41],       // Icon size
+    iconAnchor: [12, 41]      // Position where the icon is anchored to the map
 });
 
 // Custom icon for the destination location (blue)
 const destinationIcon = L.icon({
-    iconUrl: 'img/blueicon.png', // Path to custom blue marker icon
+    iconUrl: 'img/blueicon.png', // Relative path to 'img' folder
     iconSize: [25, 41],
     iconAnchor: [12, 41]
 });
@@ -92,6 +92,6 @@ function calculateDistance(loc1, loc2) {
     const distance = R * c;
     return distance;
 }
-
+ 
 // Start tracking when the page loads
 startRealTimeTracking();
