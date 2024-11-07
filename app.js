@@ -7,8 +7,11 @@ function dmsToDecimal(degrees, minutes, seconds, direction) {
     return decimal;
 }
 
-// Convert library coordinates in decimal format
-const libraryCoords = [12.861555, 77.664328]; // Latitude: 12.861555, Longitude: 77.664328
+// Convert destination coordinates in DMS format to decimal
+const destinationCoords = [
+    dmsToDecimal(12, 51, 41, "N"), // Latitude: 12°51'41" N
+    dmsToDecimal(77, 39, 52, "E")  // Longitude: 77°39'52" E
+];
 
 // Initialize the Leaflet Map
 const map = L.map('map').setView([12.85888960563884, 77.66242347519417], 19); // Starting point at entrance
@@ -19,67 +22,59 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Variables to hold the GeoJSON layers for each floor
-let floor1, floor2;
+// Custom icon for the user's current location (yellow)
+const userIcon = L.icon({
+    iconUrl: '/Users/sankalptaral/Desktop/Sankalpdev/human.png', // Path to custom yellow marker icon
+    iconSize: [25, 41], // Icon size
+    iconAnchor: [12, 41] // Position where the icon is anchored to the map
+});
 
-// Load the GeoJSON data for Floor 1
-fetch('geojson/floor1.geojson')
-    .then(response => response.json())
-    .then(data => {
-      floor1 = L.geoJSON(data, {
-        style: { color: "#ffeb3b", fillOpacity: 0.7 }
-      }).addTo(map); // Add Floor 1 to the map by default
-    });
+// Custom icon for the destination location (blue)
+const destinationIcon = L.icon({
+    iconUrl: 'path/to/blue-marker-icon.png', // Path to custom blue marker icon
+    iconSize: [25, 41],
+    iconAnchor: [12, 41]
+});
 
-// Load the GeoJSON data for Floor 2
-fetch('geojson/floor2.geojson')
-    .then(response => response.json())
-    .then(data => {
-      floor2 = L.geoJSON(data, {
-        style: { color: "#4caf50", fillOpacity: 0.7 }
-      });
-
-      // Initially, hide Floor 2
-      map.removeLayer(floor2);
-    });
+// Add destination marker with blue icon
+L.marker(destinationCoords, { icon: destinationIcon }).addTo(map);
 
 // Initialize Routing Machine (no initial waypoints as user's location will be set dynamically)
-let userMarker;
+let userMarker = L.marker([0, 0], { icon: userIcon }).addTo(map);
 let routeControl = L.Routing.control({
-    waypoints: [null, L.latLng(libraryCoords)],
+    waypoints: [null, L.latLng(destinationCoords)],
     routeWhileDragging: true
 }).addTo(map);
 
 // Function to handle real-time location updates
 function startRealTimeTracking() {
     if (navigator.geolocation) {
-      const watchId = navigator.geolocation.watchPosition((position) => {
-          const userLocation = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-          };
+        navigator.geolocation.watchPosition((position) => {
+            const userLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
 
-          if (!userMarker) {
-              userMarker = L.marker(userLocation).addTo(map);
-          } else {
-              userMarker.setLatLng(userLocation);
-          }
+            // Update user marker position
+            userMarker.setLatLng(userLocation);
+            map.setView(userLocation, 19);
 
-          map.setView(userLocation, 19);
-          routeControl.setWaypoints([L.latLng(userLocation), L.latLng(libraryCoords)]);
-
-          const distance = calculateDistance(userLocation, libraryCoords);
-          if (distance < 0.02) {
-              alert("You have arrived at your destination!");
-              navigator.geolocation.clearWatch(watchId);
-          }
-      }, (error) => {
-          console.error("Geolocation error: ", error);
-      }, {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0
-      });
+            // Update route with new user location
+            routeControl.setWaypoints([L.latLng(userLocation), L.latLng(destinationCoords)]);
+            
+            // Calculate distance to destination and notify if within 5 meters
+            const distance = calculateDistance(userLocation, destinationCoords);
+            if (distance < 0.005) { // Within 5 meters
+                alert("You have arrived at your destination!");
+                navigator.geolocation.clearWatch(watchId);
+            }
+        }, (error) => {
+            console.error("Geolocation error: ", error);
+        }, {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        });
     } else {
         alert("Geolocation is not supported by this browser.");
     }
